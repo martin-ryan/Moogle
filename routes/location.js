@@ -3,7 +3,7 @@ var router = express.Router();
 // var passport = require('passport');
 // var LocalStrategy = require('passport-local').Strategy;
 var model = require('../models/Location');
-var User = require('../models/User');
+// var User = require('../models/User');
 
 
 // configure passport
@@ -83,5 +83,24 @@ router.delete('/:id', function(req, res, next) {
   });
 });
 
+router.get('/location/:id', function(req, res, next) {
+  model.findById(user.restaurantID, function(err, location) {
+    if (err) {
+      res.json(buildErrorResponse(err));
+    } else {
+      res.json(location);
+    }
+  });
+});
+
+router.get('/location/burger/:id', function(req, res, next) {
+  model.findById(user.burgerID, function(err, burger) {
+    if (err) {
+      res.json(buildErrorResponse(err));
+    } else {
+      res.json(burger);
+    }
+  });
+});
 
 module.exports = router;

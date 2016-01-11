@@ -1,7 +1,12 @@
+
+
+// THIS IS NOTHING BUT A DATA ROUTE FOR USER LOGIN
+
+
 var express = require('express');
 // // var passport = require('passport');
 // // var LocalStrategy = require('passport-local').Strategy;
-var user = require('../models/User');
+var model = require('../models/User');
 var router = express.Router();
 
 // configure passport
@@ -12,6 +17,8 @@ var router = express.Router();
 
 router.get('/', function(req, res, next) {
   model.find(function(err, users) {
+    // console.log(users);
+    // console.log(err);
     if (err) {
       res.json(buildErrorResponse(err));
     } else {

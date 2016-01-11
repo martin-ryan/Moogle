@@ -21,11 +21,11 @@ var search = require('./routes/search');
 
 var app = express();
 // // instantly enable sessions
-// app.use(require('express-session')({
-//   secret: 'something secret', //kind of like your own salt
-//   resave: false,
-//   saveUninitialized: false
-// }));
+app.use(require('express-session')({
+  secret: 'something secret', //kind of like your own salt
+  resave: false,
+  saveUninitialized: false
+}));
 // //
 // app.use(passport.initialize());
 // app.use(passport.session());
@@ -51,7 +51,8 @@ app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', user);
+app.use('/', index);
+app.use('/user', user);
 app.use('/location', location);
 app.use('/search', search);
 

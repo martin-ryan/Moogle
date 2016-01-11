@@ -14,12 +14,12 @@ var active = active || {};
 // end configuration for passport
 
 app.loginView = Backbone.View.extend({
-  el: $('#login-content'),
+  el: $('#body_container'),
   initialize: function() {
     active.userCollection = new app.userCollection();
-    active.userCollection.fetch();
-    console.log(active.userCollection);
-    console.log("SearchList instaniated");
+    //this.collection = active.userCollection;
+    // active.userCollection.fetch();
+    // console.log(active.userCollection);
     this.render();
   },
   events: {
@@ -27,24 +27,29 @@ app.loginView = Backbone.View.extend({
   },
   render: function() {
     var template = document.getElementById('login-template').innerHTML;
-    console.log(template);
     var compiledTemplate = _.template(template);
-    this.el.innerHTML = template;
+    this.$el.append(compiledTemplate);
   },
   login: function() {
+    // var col = collection;
     var data = {
       username: document.getElementById('login-username').value,
       password: document.getElementById('login-password').value
     };
-    var name = active.userCollection.get("username");
-    console.log(name);
-    if (name == data.username) {
-      var pass = active.userCollection.get("password");
-      console.log(pass);
-      if (pass == data.password) {
-        console.log(name + "\n" + pass);
-        // active.collection = new app.searchCollection();
+    // 1. loop through all models in collection
+    for (var model in active.userCollection) {
+      // 2. check to see if this model's username/pw matches
+      var model = active.userCollection[model];
+      var modelUsername = model.get('username');
+      if (data.username == modelUsername) {
+        // 3. success! alert the user
+        console.log("you have passed the test");
+        break;
+      } else {
+        // 4. keep on trucking
       }
+      //5. if condiiton never ever meets, no user, let them know
+
     }
     // console.log(data);
     // passport.authenticate("local", { failureRedirect: "/" }), function(req, res) {
