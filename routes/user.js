@@ -1,20 +1,20 @@
 
 
-// THIS IS NOTHING BUT A DATA ROUTE FOR USER LOGIN
+// __________ THIS IS NOTHING BUT A DATA (API) ROUTE FOR USER LOGIN __________
 
 
+//
+// require EXPRESS so that we can use a ROUTER for this RESTful implementation
 var express = require('express');
-// // var passport = require('passport');
-// // var LocalStrategy = require('passport-local').Strategy;
-var model = require('../models/User');
 var router = express.Router();
 
-// configure passport
-// passport.use(new LocalStrategy(User.authenticate()));
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
-// end configuration for passport
+//
+// load our user MODEL for use by the RESTful HTTP functions
+var model = require('../models/User');
 
+//
+// establish RESTful HTTP for API
+// ------ GET ALL -------
 router.get('/', function(req, res, next) {
   model.find(function(err, users) {
     // console.log(users);
@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
     }
   });
 });
-
+// ------ GET ONE -------
 router.get('/:id', function(req, res, next) {
   model.findById(req.params.id, function(err, user) {
     if (err) {
@@ -36,7 +36,7 @@ router.get('/:id', function(req, res, next) {
     }
   });
 });
-
+// ------ CREATE ONE -------
 router.post('/', function(req, res, next) {
   model.create(req.body, function(err, user) {
     if (err) {
@@ -46,7 +46,7 @@ router.post('/', function(req, res, next) {
     }
   });
 });
-
+// ------ UPDATE ONE -------
 router.put('/:id', function(req, res, next) {
   model.findByIdAndUpdate(req.params.id, req.body, function(err, user) {
     if (err) {
@@ -56,18 +56,7 @@ router.put('/:id', function(req, res, next) {
     }
   });
 });
-
-router.patch('/:id', function(req, res, next) {
-  model.findByIdAndUpdate(req.params.id, req.body, function(err, user) {
-    if (err) {
-      res.json(buildErrorResponse(err));
-    } else {
-      res.json(user);
-    }
-  });
-});
-
-
+// ------ DELETE ONE -------
 router.delete('/:id', function(req, res, next) {
   model.findByIdAndRemove(req.params.id, req.body, function(err, user) {
     if (err) {
@@ -78,4 +67,15 @@ router.delete('/:id', function(req, res, next) {
   });
 });
 
+//
+// DONT NEED PATCH FOR BACKBONE
+// router.patch('/:id', function(req, res, next) {
+//   model.findByIdAndUpdate(req.params.id, req.body, function(err, user) {
+//     if (err) {
+//       res.json(buildErrorResponse(err));
+//     } else {
+//       res.json(user);
+//     }
+//   });
+// });
 module.exports = router;

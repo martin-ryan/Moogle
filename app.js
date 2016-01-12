@@ -1,61 +1,39 @@
-var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-// declare passport
-// var passport = require('passport');
-// var LocalStrategy = require('passport-local').Strategy;
-// var FacebookStrategy = require('passport-facebook').Strategy;
-// but before the db is loaded
+//
+// call Express and define our APP as Express
+var express = require('express');
+var app = express();
 
+//
+// load MONGOOSE and connect to our MONGODB database
 require("./db/database");
 
+//
+// Include ROUTES and define ROUTER MAPS
 var index = require('./routes/index');
 var user = require('./routes/user');
-var location = require('./routes/location');
-var search = require('./routes/search');
-
-
-var app = express();
-// // instantly enable sessions
-app.use(require('express-session')({
-  secret: 'something secret', //kind of like your own salt
-  resave: false,
-  saveUninitialized: false
-}));
-// //
-// app.use(passport.initialize());
-// app.use(passport.session());
-// // done enabling sessions
 //
-// // configure passport
-// var User = require('./models/User');
-// passport.use(new LocalStrategy(User.authenticate()));
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
-// // end configuration for passport
+app.use('/', index);
+app.use('/user', user);
 
-// view engine setup
+//
+// define LOCATION and TYPES of VIEWS
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+//
+// include and configure server PACKAGES
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/user', user);
-app.use('/location', location);
-app.use('/search', search);
-
+//
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -63,8 +41,9 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+//
 // error handlers
-
+//
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
